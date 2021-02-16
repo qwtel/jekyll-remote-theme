@@ -6,6 +6,7 @@ module Jekyll
       PROJECT_URL = "https://github.com/benbalter/jekyll-remote-theme"
       USER_AGENT = "Jekyll Remote Theme/#{VERSION} (+#{PROJECT_URL})"
       MAX_FILE_SIZE = 1 * (1024 * 1024 * 1024) # Size in bytes (1 GB)
+      TOKEN_KEY = "JEKYLL_REMOTE_THEME_TOKEN"
       NET_HTTP_ERRORS = [
         Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::OpenTimeout,
         Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError,
@@ -58,6 +59,7 @@ module Jekyll
 
         @request = Net::HTTP::Get.new zip_url.request_uri
         @request["User-Agent"] = USER_AGENT
+        @request["Authorization"] = "token #{ENV[TOKEN_KEY]}" if ENV[TOKEN_KEY]
         @request
       end
 
